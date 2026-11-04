@@ -1,0 +1,56 @@
+version: '3.8'
+
+networks:
+  zis-net:
+    driver: bridge
+
+volumes:
+  db_penghimpunan_data:
+  db_keuangan_data:
+  db_pendistribusian_data:
+
+services:
+  db_penghimpunan:
+    image: mariadb:latest
+    container_name: maria_penghimpunan
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_DATABASE: db_penghimpunan
+    ports:
+      - "3307:3306"
+    networks:
+      - zis-net
+    volumes:
+      - db_penghimpunan_data:/var/lib/mysql
+      - ./sql/penghimpunan.sql:/docker-entrypoint-initdb.d/penghimpunan.sql
+
+  db_keuangan:
+    image: mariadb:latest
+    container_name: maria_keuangan
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_DATABASE: db_keuangan
+    ports:
+      - "3308:3306"
+    networks:
+      - zis-net
+    volumes:
+      - db_keuangan_data:/var/lib/mysql
+      - ./sql/keuangan.sql:/docker-entrypoint-initdb.d/keuangan.sql
+
+  db_pendistribusian:
+    image: mariadb:latest
+    container_name: maria_pendistribusian
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword123
+      MYSQL_DATABASE: db_pendistribusian
+    ports:
+      - "3309:3306"
+    networks:
+      - zis-net
+    volumes:
+      - db_pendistribusian_data:/var/lib/mysql
+      - ./sql/pendistribusian.sql:/docker-entrypoint-initdb.d/pendistribusian.sql
